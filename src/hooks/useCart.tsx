@@ -46,21 +46,25 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
       if(existProduct >= 0){
 
-        const newCart = cart.filter(product => {
+        const newCart = cart.map(product => {
           if(product.id === productId){
+            
             if((product.amount+1) > productStock[productId]){
               toast.error('Quantidade solicitada fora de estoque');
-              return
+              return product
+            }else {
+              return {
+                ...product,
+                amount: ++product.amount
+              }
             }
-            
-            return [{...product, amount: ++product.amount}]
+          } else {
+            return product
           }
         })
 
-        setCart([...cart,...newCart])
-        localStorage.setItem('@RocketShoes:cart', JSON.stringify([...cart,...newCart]))
-
-        console.log('Produto já adicionado, foi alterado a qauntidade.')
+        setCart(newCart)
+        localStorage.setItem('@RocketShoes:cart', JSON.stringify(newCart))
         return 
       }
 
@@ -81,52 +85,6 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
           amount: 1
         }]))
       })
-
-      // console.log(cart);
-         
-      /*
-      api.get(`stock/${productId}`)
-        .then(responseStcok => {
-
-          if(existProduct >= 0){
-
-            cart.forEach(product => { 
-              if(product.id === productId){
-                if(product.amount > 3){
-                  toast.error('Quantidade solicitada fora de estoque');
-                  return
-                } else {
-                  const updateAmountCart = [{...product, amount: ++product.amount}]
-                  setCart(updateAmountCart)
-                  localStorage.setItem('@RocketShoes:cart', JSON.stringify(updateAmountCart))
-                }
-              }
-            })
-    
-            // const { amount } = responseStcok.data
-            // updateProductAmount({
-            //   productId,
-            //   amount
-            // })
-           
-            return;
-          }
-
-
-          if(responseStcok.data.amount > 0){
-
-            api.get(`products/${productId}`)
-            .then(response => {
-              const newAmountCart = {...response.data, amount: 1}
-
-              setCart([...cart,newAmountCart])
-              localStorage.setItem('@RocketShoes:cart', JSON.stringify([...cart,newAmountCart]))
-            })
-          } else {
-            toast.error('Quantidade solicitada fora de estoque');
-          }
-
-        })*/
 
     } catch {
       // TODO
