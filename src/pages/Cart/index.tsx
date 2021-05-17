@@ -31,20 +31,12 @@ const Cart = (): JSX.Element => {
     formatPrice(
       cart.reduce((sumTotal, product) => {
         // TODO
-        return sumTotal += product.amount
+        return sumTotal += (product.price*product.amount)
       }, 0)
     )
 
-  console.log(cartFormatted, 'formated')
-
-  console.log(cart, 'viwerCart')
-
-  console.log(cart);
-
-
   function handleProductIncrement(product: Product) {
     // TODO
-    console.log(product.amount, 'antes')
     const updateProductIncrement = {productId: product.id, amount: ++product.amount};
     updateProductAmount(updateProductIncrement)
   }
@@ -53,7 +45,6 @@ const Cart = (): JSX.Element => {
     // TODO
     const updateProductDecrement = {productId: product.id, amount: --product.amount};
     updateProductAmount(updateProductDecrement)
-    // updateProductAmount({id, amount})
   }
 
   function handleRemoveProduct(productId: number) {
@@ -130,7 +121,7 @@ const Cart = (): JSX.Element => {
 
         <Total>
           <span>TOTAL</span>
-          <strong>R$ 359,80</strong>
+          <strong>{total}</strong>
         </Total>
       </footer>
     </Container>
