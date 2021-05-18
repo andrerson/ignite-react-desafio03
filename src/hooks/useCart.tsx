@@ -93,7 +93,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
       // TODO
       
       const productExist = cart.findIndex(productExist => productExist.id === productId);
-      if(productExist <= 0 ){
+      if(productExist === -1 ){
         throw("");
       }
 
